@@ -139,12 +139,6 @@
     .theme-toggle:hover {
       background: #0056b3;
     }
-    .options {
-      margin: 10px 0;
-    }
-    .options label {
-      margin-right: 10px;
-    }
   </style>
 </head>
 <body>
@@ -153,17 +147,6 @@
     <form onsubmit="calculate(); return false;">
       <input type="text" id="percentage" placeholder="Enter percentage (e.g., 41%)" required>
       <input type="text" id="number" placeholder="Enter number (e.g., 12)" required>
-      <div class="options">
-        <label>
-          <input type="radio" name="operation" value="percentageOf" checked> Percentage Of
-        </label>
-        <label>
-          <input type="radio" name="operation" value="discount"> Subtract (Discount)
-        </label>
-        <label>
-          <input type="radio" name="operation" value="tip"> Add (Tip/Markup)
-        </label>
-      </div>
       <button type="submit">Calculate</button>
       <button type="button" onclick="clearForm()">Clear</button>
     </form>
@@ -194,35 +177,14 @@
         return;
       }
 
-      // Get the selected operation
-      const operation = document.querySelector('input[name="operation"]:checked').value;
-
-      // Calculate the result based on the selected operation
-      let result;
-      let description;
-      switch (operation) {
-        case 'percentageOf':
-          result = (percentage / 100) * number;
-          description = `${percentage}% of ${number} = ${result}`;
-          break;
-        case 'discount':
-          result = number - (percentage / 100) * number;
-          description = `${number} - ${percentage}% = ${result}`;
-          break;
-        case 'tip':
-          result = number + (percentage / 100) * number;
-          description = `${number} + ${percentage}% = ${result}`;
-          break;
-        default:
-          result = 'Invalid operation';
-          description = 'Invalid operation';
-      }
+      // Calculate the result
+      const result = (percentage / 100) * number;
 
       // Display the result
       document.getElementById('result').innerText = `Result: ${result}`;
 
       // Add to history
-      history.push(description);
+      history.push(`${percentage}% of ${number} = ${result}`);
       updateHistory();
     }
 
@@ -247,6 +209,9 @@
     function toggleDarkMode() {
       document.body.classList.toggle('dark-mode');
     }
+
+    // Remove the redundant Enter key event listener
+    // The form's onsubmit event will handle Enter key submissions
   </script>
 </body>
 </html>
